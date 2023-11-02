@@ -12,6 +12,12 @@ from selenium.webdriver.common.keys import Keys
 # about:config
 
 
+#DATA_FOR_BOOKING
+login = "joffre@ebyjeans.com"
+password = "Fufik_777176"
+# day = 5
+
+
 def find_by_xpath(xpath: str):
     return WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, xpath)))
 
@@ -45,9 +51,6 @@ browser.get("https://srv-go.ru")
 bugristoe = find_by_xpath("//div[@id='lyt_chk_clone_0']")
 bugristoe.click()
 
-login = "joffre@ebyjeans.com"
-password = "Fufik_777176"
-
 logging_by_email(login=login, password=password)
 
 # CREATE_REQUEST_WINDOW
@@ -80,14 +83,17 @@ next_page_btn2 = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/
 next_page_btn2.click()
 
 # DAY_BOOKING_PAGE
-window_for_slots = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[3]/div/div[1]/div/div[1]/div[3]/div/div[2]/svg")
-window_for_slots.click()
+day = 2
+day_choice_window = find_by_xpath(
+    "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[3]/div/div[1]/div/div[1]/div[3]/div/div[1]/div/input")
+day_choice_window.send_keys(day)
 
-# blok_slots_xpath = '//*[@id="lyt_slots"]'
-# slots = find_by_xpath(blok_slots_xpath)
-# slots.click()
-# for slot in slots:
-#     print(slot.getattr("class"))
+block = browser.find_elements(By.XPATH, '//*[@id="lyt_slots"]')
+print(len(block))
+
+
+
+
 
 
 
