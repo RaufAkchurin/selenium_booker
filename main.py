@@ -3,12 +3,12 @@ import multiprocessing
 import selenium_logic
 
 if __name__ == '__main__':
-    num_instances = 3  # Укажите количество требуемых экземпляров Selenium
+    num_instances = 5
 
     processes = []
 
     for i in range(num_instances):
-        process = multiprocessing.Process(target=selenium_logic, args=(i,))
+        process = multiprocessing.Process(target=selenium_logic.central)
         processes.append(process)
         process.start()
 
