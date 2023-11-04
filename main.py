@@ -2,6 +2,9 @@
 # 2 день - 2 часа
 # 3 день - 3 часа
 # 4 день - 2 часа + 1 + 1 + 1
+# 5 день - 1 час + 1
+
+
 import datetime
 import time
 from selenium import webdriver
@@ -10,18 +13,22 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 
-# Set options
-# about:config
-
 
 #DATA_FOR_BOOKING
-login = "joffre@ebyjeans.com"
-password = "Fufik_777176"
-day = 5
+# login = "joffre@ebyjeans.com"
+# password = "Fufik_777176"
+# day = "04.11.2023"
+
+
+#ALI_DATA
+login = "a21616157@gmail.com"
+password = "Salima.Salih0203"
+day = "04.11.2023"
+
 
 
 def find_by_xpath(xpath: str):
-    return WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, xpath)))
+    return WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath)))
 
 
 def select_first_in_dropdown(xpath: str):
@@ -47,6 +54,7 @@ option = webdriver.FirefoxOptions()
 option.set_preference('dom.webnotifications.disabled', False)
 option.set_preference('media.volume_scale', '0.0')
 
+
 browser = webdriver.Firefox()
 browser.get("https://srv-go.ru")
 
@@ -57,44 +65,43 @@ logging_by_email(login=login, password=password)
 
 # CREATE_REQUEST_WINDOW
 
-create_request_btn = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[1]/div[2]/div/div[4]/div[3]/button/div/span")
-time.sleep(1)
-create_request_btn.click()
 
-wehicle_choice_btn = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[1]/div/div[2]/div[3]/div/div")
-wehicle_choice_btn.click()
+def create_request():
+    create_request_btn = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[1]/div[2]/div/div[4]/div[3]/button/div/span")
+    time.sleep(1)
+    create_request_btn.click()
 
+    wehicle_choice_btn = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[1]/div/div[2]/div[3]/div/div")
+    wehicle_choice_btn.click()
 
-SELECT_LOCATOR = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[1]/div/div[2]/div[3]/div/div")
-SELECT_LOCATOR.send_keys(Keys.ARROW_DOWN)
-SELECT_LOCATOR.send_keys(Keys.ARROW_DOWN)
-SELECT_LOCATOR.send_keys(Keys.ENTER)
+    SELECT_LOCATOR = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[1]/div/div[2]/div[3]/div/div")
+    # SELECT_LOCATOR.send_keys(Keys.ARROW_DOWN)
+    # SELECT_LOCATOR.send_keys(Keys.ARROW_DOWN)
+    car_choice = find_by_xpath("/html/body/div[5]/div/div/div/div[1]/div/div/div[272]")
+    car_choice.click()
+    SELECT_LOCATOR.send_keys(Keys.ENTER)
 
-next_page_btn = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button/div/span")
-next_page_btn.click()
+    next_page_btn = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button/div/span")
+    next_page_btn.click()
 
-transport_type_btn = select_first_in_dropdown("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[3]/div[3]/div/div")
-transport_kind_btn = select_first_in_dropdown("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[5]/div[3]/div/div")
+    transport_type_btn = select_first_in_dropdown("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[3]/div[3]/div/div")
+    transport_kind_btn = select_first_in_dropdown("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[5]/div[3]/div/div")
 
+    copy_data_btn = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[7]/div/label/span")
+    copy_data_btn.click()
 
-copy_data_btn = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[7]/div/label/span")
-copy_data_btn.click()
-
-
-next_page_btn2 = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button/div/span")
-next_page_btn2.click()
+    next_page_btn2 = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button/div/span")
+    next_page_btn2.click()
 
 # DAY_BOOKING_PAGE
 
 
-def day_choice(day: datetime.date):
+def day_choice(day: datetime):
     day_choice_window = find_by_xpath(
         "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[3]/div/div[1]/div/div[1]/div[3]/div/div[1]/div/input")
-    day_choice_window.send_keys(Keys.BACK_SPACE)
+    day_choice_window.send_keys(Keys.CONTROL + 'a')  # Select all text
+    day_choice_window.send_keys(Keys.BACK_SPACE)  # Delete the selected text
     day_choice_window.send_keys(day)
-
-
-day_choice(day)
 
 
 def inactive_checker(slot):
@@ -108,20 +115,29 @@ def inactive_checker(slot):
         return False
 
 
-def slots_booker():
-    while True:
-        all_slots = []
+def search_empty():
+    all_slots = []
+    for j in range(14):
+        print(f"1 loop {j} iteration")
         for i in range(1, 24):
+            print(f"2 loop {i} iteration")
             try:
                 xpath = f'//*[@id="lyt_slot_clone_{str(i)}"]'
                 slot = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, xpath)))
                 all_slots.append(slot)
                 if not inactive_checker(slot):
                     day_choice(day)
-                    print(len(all_slots), datetime.datetime.now())
+                    # print(len(all_slots), datetime.datetime.now())
                     continue
             except:
                 break
+
+
+def slots_booker():
+    while True:
+        create_request()
+        day_choice(day)
+        search_empty()
 
 
 slots_booker()
@@ -129,6 +145,7 @@ slots_booker()
 
 # надо добавить проверку наличия элемента ввода даты
 # если элемента нету - то запускать блок с созданием новой заявки
+# добавить выбор автомобиля по данным
 
 
 
