@@ -1,15 +1,18 @@
 import multiprocessing
-from multiprocessing import Pool
-from selenium import webdriver
 
-from selenium_logic import slots_booker
-
+import selenium_logic
 
 if __name__ == '__main__':
-    processes = [multiprocessing.Process(target=slots_booker) for _ in range(3)]
+    num_instances = 3  # Укажите количество требуемых экземпляров Selenium
 
-    for process in processes:
+    processes = []
+
+    for i in range(num_instances):
+        process = multiprocessing.Process(target=selenium_logic, args=(i,))
+        processes.append(process)
         process.start()
 
     for process in processes:
         process.join()
+
+    print("Все экземпляры приложения Selenium завершили выполнение.")

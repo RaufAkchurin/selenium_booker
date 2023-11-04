@@ -53,6 +53,7 @@ def logging_by_email(login: str, password: str):
 option = webdriver.FirefoxOptions()
 option.set_preference('dom.webnotifications.disabled', False)
 option.set_preference('media.volume_scale', '0.0')
+# option.add_argument("--headless")
 
 
 browser = webdriver.Firefox()
@@ -120,17 +121,17 @@ def inactive_checker(slot):
 def search_empty():
     all_slots = []
     for j in range(14):
-        print(f"1 loop {j} iteration")
         for i in range(1, 24):
-            print(f"2 loop {i} iteration")
             try:
                 xpath = f'//*[@id="lyt_slot_clone_{str(i)}"]'
                 slot = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, xpath)))
                 all_slots.append(slot)
                 if not inactive_checker(slot):
                     day_choice(day)
-                    # print(len(all_slots), datetime.datetime.now())
+                    print(len(all_slots), datetime.datetime.now())
                     continue
+                else:
+                    break
             except:
                 break
 
@@ -140,7 +141,6 @@ def slots_booker():
         create_request()
         day_choice(day)
         search_empty()
-
 
 slots_booker()
 
