@@ -19,7 +19,7 @@ def central():
     # DATA_FOR_BOOKING
     login = "joffre@ebyjeans.com"
     password = "Fufik_777176"
-    day = "04.11.2023"
+    day = "05.11.2023"
 
     # ALI_DATA
     # login = "a21616157@gmail.com"
@@ -53,9 +53,9 @@ def central():
     option.set_preference('dom.webnotifications.disabled', False)
     option.set_preference('media.volume_scale', '0.0')
     # option.add_argument("--headless")
+    option.add_argument('--enable-gpu')
 
-
-    browser = webdriver.Firefox()
+    browser = webdriver.Firefox(options=option)
     browser.get("https://srv-go.ru")
 
     bugristoe = find_by_xpath("//div[@id='lyt_chk_clone_0']")
