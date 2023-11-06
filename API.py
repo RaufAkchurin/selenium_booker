@@ -1,30 +1,30 @@
 import datetime
-
-import aiohttp
-import asyncio
 from selenium import webdriver
+import aiohttp
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import asyncio
 
-
-async def click_element_async(driver, element_xpath):
-    try:
-        element = await driver.wait.until(
-            EC.element_to_be_clickable((By.XPATH, element_xpath))
-        )
-        await element.click()
-    except Exception as e:
-        print(f"Error clicking element: {e}")
+from selenium_logic import central
 
 
-async def check_free(data):
-    for item in data:
-        if not item["free"]:
-            index = data.index(item)
-            xpath = f'//*[@id="lyt_slot_clone_{str(index+1)}"]'
-            slot = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, xpath)))
+# async def click_element_async(driver, element_xpath):
+#     try:
+#         element = await driver.wait.until(
+#             EC.element_to_be_clickable((By.XPATH, element_xpath))
+#         )
+#         await element.click()
+#     except Exception as e:
+#         print(f"Error clicking element: {e}")
+#
+#
+# async def check_free(data):
+#     for item in data:
+#         if not item["free"]:
+#             index = data.index(item)
+#             xpath = f'//*[@id="lyt_slot_clone_{str(index+1)}"]'
+#             slot = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, xpath)))
 
 
 async def fetch_data(url):
@@ -32,7 +32,7 @@ async def fetch_data(url):
         async with session.get(url) as response:
             if response.status == 200:
                 data = await response.json()
-                await check_free(data)
+                # await check_free(data)
                 print(datetime.datetime.now())
                 return data
             else:
@@ -41,7 +41,7 @@ async def fetch_data(url):
 
 async def main():
     # List of URLs you want to request data from
-    urls = ["https://srv-go.ru/slots/e5bfbfd0-06b9-47c0-9e90-17255495a6ce/20231109/list.json"] * 5
+    urls = ["https://srv-go.ru/slots/e5bfbfd0-06b9-47c0-9e90-17255495a6ce/20231109/list.json"] * 15
 
     # Create tasks for fetching data from each URL
     tasks = [fetch_data(url) for url in urls]
@@ -58,6 +58,7 @@ async def main():
 
 
 if __name__ == "__main__":
+    central()
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
 

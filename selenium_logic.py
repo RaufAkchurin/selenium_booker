@@ -19,7 +19,7 @@ def central():
     # DATA_FOR_BOOKING
     login = "joffre@ebyjeans.com"
     password = "Fufik_777176"
-    day = "05.11.2023"
+    day = "07.11.2023"
 
     # ALI_DATA
     # login = "a21616157@gmail.com"
@@ -101,8 +101,8 @@ def central():
     def day_choice(day: datetime):
         day_choice_window = find_by_xpath(
             "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[3]/div/div[1]/div/div[1]/div[3]/div/div[1]/div/input")
-        day_choice_window.send_keys(Keys.CONTROL + 'a')  # Select all text
-        day_choice_window.send_keys(Keys.BACK_SPACE)  # Delete the selected text
+        # day_choice_window.send_keys(Keys.CONTROL + 'a')  # Select all text
+        # day_choice_window.send_keys(Keys.BACK_SPACE)  # Delete the selected text
         day_choice_window.send_keys(day)
 
 
@@ -136,10 +136,10 @@ def central():
 
 
     def slots_booker():
-        while True:
+        # while True:
             create_request()
             day_choice(day)
-            search_empty()
+            # search_empty()
 
     slots_booker()
 
