@@ -1,8 +1,14 @@
+# # ALI_DATA
+# login = "a21616157@gmail.com"
+# password = "Salima.Salih0203"
+# day = "07.11.2023"
+
 # 1) - 2 обучение
 # 2 день - 2 часа
 # 3 день - 3 часа
 # 4 день - 2 часа + 1 + 1 + 1
 # 5 день - 1  + 1 + 1 +2
+# 6 день - 3 +
 
 
 import datetime
@@ -16,38 +22,34 @@ from selenium.webdriver.common.keys import Keys
 
 
 def central():
-    # DATA_FOR_BOOKING
-    login = "joffre@ebyjeans.com"
-    password = "Fufik_777176"
+    # ACCOUNT 2
+    login = "oveta95@ymemphisa.com"
+    password = "Adsmkdjwh341A-"
     day = "07.11.2023"
-
-    # ALI_DATA
-    # login = "a21616157@gmail.com"
-    # password = "Salima.Salih0203"
-    # day = "04.11.2023"
 
     def find_by_xpath(xpath: str):
         return WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath)))
-
 
     def select_first_in_dropdown(xpath: str):
         btn = find_by_xpath(xpath)
         btn.send_keys(Keys.ARROW_DOWN)
         btn.send_keys(Keys.ARROW_DOWN)
+        btn.send_keys(Keys.ARROW_DOWN)
         btn.send_keys(Keys.ENTER)
 
-
     def logging_by_email(login: str, password: str):
-        login_window = find_by_xpath("/html/body/div[1]/div/div/div[2]/div[2]/div/div[2]/div/div[4]/div[2]/div/div/div[2]/div[3]/div/div/input")
+        login_window = find_by_xpath(
+            "/html/body/div[1]/div/div/div[2]/div[2]/div/div[2]/div/div[4]/div[2]/div/div/div[2]/div[3]/div/div/input")
         login_window.send_keys(login)
 
-        password_window = find_by_xpath("/html/body/div[1]/div/div/div[2]/div[2]/div/div[2]/div/div[4]/div[2]/div/div/div[3]/div[3]/div/div/input")
+        password_window = find_by_xpath(
+            "/html/body/div[1]/div/div/div[2]/div[2]/div/div[2]/div/div[4]/div[2]/div/div/div[3]/div[3]/div/div/input")
         password_window.send_keys(password)
 
-        enter = find_by_xpath("/html/body/div[1]/div/div/div[2]/div[2]/div/div[2]/div/div[4]/div[2]/div/div/div[5]/div[1]/button/div/span")
+        enter = find_by_xpath(
+            "/html/body/div[1]/div/div/div[2]/div[2]/div/div[2]/div/div[4]/div[2]/div/div/div[5]/div[1]/button/div/span")
         time.sleep(2)
         enter.click()
-
 
     option = webdriver.FirefoxOptions()
     option.set_preference('dom.webnotifications.disabled', False)
@@ -66,45 +68,51 @@ def central():
     # CREATE_REQUEST_WINDOW
 
     def car_select():
-        SELECT_LOCATOR = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[1]/div/div[2]/div[3]/div/div")
+        SELECT_LOCATOR = find_by_xpath(
+            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[1]/div/div[2]/div[3]/div/div")
+        SELECT_LOCATOR.send_keys(Keys.ARROW_DOWN)
         SELECT_LOCATOR.send_keys(Keys.ARROW_DOWN)
         SELECT_LOCATOR.send_keys(Keys.ARROW_DOWN)
         # car_choice = find_by_xpath("/html/body/div[8]/div/div/div/div[1]/div/div/div[274]")
         # car_choice.click()
         SELECT_LOCATOR.send_keys(Keys.ENTER)
 
-
     def create_request():
-        create_request_btn = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[1]/div[2]/div/div[4]/div[3]/button/div/span")
+        create_request_btn = find_by_xpath(
+            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[1]/div[2]/div/div[4]/div[3]/button/div/span")
         time.sleep(1)
         create_request_btn.click()
 
-        wehicle_choice_btn = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[1]/div/div[2]/div[3]/div/div")
+        wehicle_choice_btn = find_by_xpath(
+            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[1]/div/div[2]/div[3]/div/div")
         wehicle_choice_btn.click()
 
         car_select()
-        next_page_btn = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button/div/span")
+        next_page_btn = find_by_xpath(
+            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button/div/span")
         next_page_btn.click()
 
-        transport_type_btn = select_first_in_dropdown("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[3]/div[3]/div/div")
-        transport_kind_btn = select_first_in_dropdown("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[5]/div[3]/div/div")
+        transport_type_btn = select_first_in_dropdown(
+            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[3]/div[3]/div/div")
+        transport_kind_btn = select_first_in_dropdown(
+            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[5]/div[3]/div/div")
 
-        copy_data_btn = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[7]/div/label/span")
+        copy_data_btn = find_by_xpath(
+            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[7]/div/label/span")
         copy_data_btn.click()
 
-        next_page_btn2 = find_by_xpath("/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button/div/span")
+        next_page_btn2 = find_by_xpath(
+            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button/div/span")
         next_page_btn2.click()
 
     # DAY_BOOKING_PAGE
 
-
     def day_choice(day: datetime):
         day_choice_window = find_by_xpath(
             "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[3]/div/div[1]/div/div[1]/div[3]/div/div[1]/div/input")
-        # day_choice_window.send_keys(Keys.CONTROL + 'a')  # Select all text
-        # day_choice_window.send_keys(Keys.BACK_SPACE)  # Delete the selected text
+        day_choice_window.send_keys(Keys.CONTROL + 'a')  # Select all text
+        day_choice_window.send_keys(Keys.BACK_SPACE)  # Delete the selected text
         day_choice_window.send_keys(day)
-
 
     def inactive_checker(slot):
         if "slotInactive" in slot.get_attribute("class"):
@@ -116,34 +124,56 @@ def central():
         else:
             return False
 
+    # def search_empty():
+    #     all_slots = []
+    #     for j in range(14):
+    #         for i in range(1, 24):
+    #             try:
+    #                 xpath = f'//*[@id="lyt_slot_clone_{str(i)}"]'
+    #                 slot = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, xpath)))
+    #                 all_slots.append(slot)
+    #                 if not inactive_checker(slot):
+    #                     day_choice(day)
+    #                     print(len(all_slots), datetime.datetime.now())
+    #                     continue
+    #                 else:
+    #                     break
+    #             except:
+    #                 break
 
-    def search_empty():
-        all_slots = []
-        for j in range(14):
-            for i in range(1, 24):
-                try:
-                    xpath = f'//*[@id="lyt_slot_clone_{str(i)}"]'
-                    slot = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, xpath)))
-                    all_slots.append(slot)
-                    if not inactive_checker(slot):
-                        day_choice(day)
-                        print(len(all_slots), datetime.datetime.now())
-                        continue
-                    else:
-                        break
-                except:
-                    break
+    def tupo_vse_knopki():
+        index = 2
+        for i in range(1, index):
+            xpath = f'//*[@id="lyt_slot_clone_{str(i)}"]'
+            try:
+                btn = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, xpath)))
+                btn.click()
+            except:
+                print("knopka ne najimaetsa")
+
+        create_btn_xpath = "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button"
+        try:
+            find_by_xpath(create_btn_xpath).click()
+            print("_____________________SUCCESS__________________________________")
+        except:
+            print(datetime.datetime.now(), "TRY again")
+
 
 
     def slots_booker():
-        # while True:
+        while True:
             create_request()
-            day_choice(day)
-            # search_empty()
+            for _ in range(25):
+                time.sleep(0.3)
+                day_choice(day)
+                tupo_vse_knopki()
 
     slots_booker()
 
-    #TODO: запуск несколько браузеров одновременно
-    #TODO: надо добавить проверку наличия элемента ввода даты
-    #TODO: если элемента нету - то запускать блок с созданием новой заявки
-    #TODO: добавить выбор автомобиля по данным
+
+central()
+
+# TODO: запуск несколько браузеров одновременно
+# TODO: надо добавить проверку наличия элемента ввода даты
+# TODO: если элемента нету - то запускать блок с созданием новой заявки
+# TODO: добавить выбор автомобиля по данным
