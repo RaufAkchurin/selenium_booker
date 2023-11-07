@@ -8,12 +8,13 @@
 # 3 день - 3 часа
 # 4 день - 2 часа + 1 + 1 + 1
 # 5 день - 1  + 1 + 1 +2
-# 6 день - 3 +
+# 6 день - 3 + 3
+# 7 день - 2
 
 
 import datetime
 import time
-
+import threading
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -26,6 +27,16 @@ def central():
     login = "oveta95@ymemphisa.com"
     password = "Adsmkdjwh341A-"
     day = "07.11.2023"
+
+    def inactive_checker(slot):
+        if "slotInactive" in slot.get_attribute("class"):
+            slot.click()
+            xpath = "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button"
+            create_btn = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, xpath)))
+            create_btn.click()
+            return True
+        else:
+            return False
 
     def find_by_xpath(xpath: str):
         return WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath)))
@@ -48,14 +59,15 @@ def central():
 
         enter = find_by_xpath(
             "/html/body/div[1]/div/div/div[2]/div[2]/div/div[2]/div/div[4]/div[2]/div/div/div[5]/div[1]/button/div/span")
-        time.sleep(2)
         enter.click()
 
     option = webdriver.FirefoxOptions()
+    option.page_load_strategy = "eager"
     option.set_preference('dom.webnotifications.disabled', False)
     option.set_preference('media.volume_scale', '0.0')
     # option.add_argument("--headless")
     option.add_argument('--enable-gpu')
+
 
     browser = webdriver.Firefox(options=option)
     browser.get("https://srv-go.ru")
@@ -80,7 +92,6 @@ def central():
     def create_request():
         create_request_btn = find_by_xpath(
             "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[1]/div[2]/div/div[4]/div[3]/button/div/span")
-        time.sleep(1)
         create_request_btn.click()
 
         wehicle_choice_btn = find_by_xpath(
@@ -107,72 +118,49 @@ def central():
 
     # DAY_BOOKING_PAGE
 
-    def day_choice(day: datetime):
-        day_choice_window = find_by_xpath(
-            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[3]/div/div[1]/div/div[1]/div[3]/div/div[1]/div/input")
-        day_choice_window.send_keys(Keys.CONTROL + 'a')  # Select all text
-        day_choice_window.send_keys(Keys.BACK_SPACE)  # Delete the selected text
+    def day_choice(day: datetime, first_mutch=False):
+        xpath = "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[3]/div/div[1]/div/div[1]/div[3]/div/div[1]/div/input"
+        if first_mutch:
+            day_choice_window = find_by_xpath(xpath)
+        else:
+            day_choice_window = browser.find_element(By.XPATH, xpath)
+        day_choice_window.clear()
         day_choice_window.send_keys(day)
 
-    def inactive_checker(slot):
-        if "slotInactive" in slot.get_attribute("class"):
-            slot.click()
-            xpath = "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button"
-            create_btn = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, xpath)))
-            create_btn.click()
-            return True
-        else:
-            return False
-
-    # def search_empty():
-    #     all_slots = []
-    #     for j in range(14):
-    #         for i in range(1, 24):
-    #             try:
-    #                 xpath = f'//*[@id="lyt_slot_clone_{str(i)}"]'
-    #                 slot = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, xpath)))
-    #                 all_slots.append(slot)
-    #                 if not inactive_checker(slot):
-    #                     day_choice(day)
-    #                     print(len(all_slots), datetime.datetime.now())
-    #                     continue
-    #                 else:
-    #                     break
-    #             except:
-    #                 break
 
     def tupo_vse_knopki():
-        index = 2
+        index = 20
         for i in range(1, index):
             xpath = f'//*[@id="lyt_slot_clone_{str(i)}"]'
             try:
-                btn = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, xpath)))
+                btn = browser.find_element(By.XPATH, xpath)
                 btn.click()
             except:
-                print("knopka ne najimaetsa")
+                pass
+        print(datetime.datetime.now())
 
         create_btn_xpath = "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button"
         try:
-            find_by_xpath(create_btn_xpath).click()
-            print("_____________________SUCCESS__________________________________")
+            btn = browser.find_element(By.XPATH, create_btn_xpath)
+            btn.click()
         except:
-            print(datetime.datetime.now(), "TRY again")
-
-
+            print("TRY again")
 
     def slots_booker():
         while True:
             create_request()
-            for _ in range(25):
-                time.sleep(0.3)
+            day_choice(day, first_mutch=True)
+            for _ in range(250):
                 day_choice(day)
                 tupo_vse_knopki()
 
     slots_booker()
 
 
-central()
 
+
+
+# TODO: сделать чтобы открывалось не несколько браузеров а несколько вкладок отдельными процессами
 # TODO: запуск несколько браузеров одновременно
 # TODO: надо добавить проверку наличия элемента ввода даты
 # TODO: если элемента нету - то запускать блок с созданием новой заявки
