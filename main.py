@@ -3,7 +3,7 @@ import multiprocessing
 import selenium_logic
 
 if __name__ == '__main__':
-    num_instances = 5
+    num_instances = 1
 
     processes = []
 

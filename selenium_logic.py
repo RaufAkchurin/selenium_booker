@@ -13,6 +13,8 @@
 
 
 import datetime
+import os
+import pickle
 import time
 import threading
 from selenium import webdriver
@@ -23,20 +25,10 @@ from selenium.webdriver.common.keys import Keys
 
 
 def central():
-    # ACCOUNT 2
+    account_id = 2
     login = "oveta95@ymemphisa.com"
     password = "Adsmkdjwh341A-"
     day = "08.11.2023"
-
-    def inactive_checker(slot):
-        if "slotInactive" in slot.get_attribute("class"):
-            slot.click()
-            xpath = "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button"
-            create_btn = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, xpath)))
-            create_btn.click()
-            return True
-        else:
-            return False
 
     def find_by_xpath(xpath: str):
         return WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath)))
@@ -47,6 +39,26 @@ def central():
         btn.send_keys(Keys.ARROW_DOWN)
         btn.send_keys(Keys.ARROW_DOWN)
         btn.send_keys(Keys.ENTER)
+
+    # def logging_main():
+    #     if os.path.isfile(os.getcwd() + f"/cookies/{account_id}.pkl"):
+    #         try:
+    #             load_cookies()
+    #         except:
+    #             logging_by_email(login=login, password=password)
+    #     else:
+    #         logging_by_email(login=login, password=password)
+
+    def cookies_save():
+        pickle.dump(browser.get_cookies(), open(os.getcwd() + f"/cookies/{account_id}.pkl", "wb"))
+
+    def load_cookies():
+        browser.delete_all_cookies()
+        cookies = pickle.load(open(os.getcwd() + f"/cookies/{account_id}.pkl", "rb"))
+        for cookie in cookies:
+            browser.add_cookie(cookie)
+        browser.refresh()
+        print("loaded cookies")
 
     def logging_by_email(login: str, password: str):
         login_window = find_by_xpath(
@@ -60,27 +72,31 @@ def central():
         enter = find_by_xpath(
             "/html/body/div[1]/div/div/div[2]/div[2]/div/div[2]/div/div[4]/div[2]/div/div/div[5]/div[1]/button/div/span")
         enter.click()
+        cookies_save()
 
 
+    def browser_with_options():
+        option = webdriver.FirefoxOptions()
+        option.page_load_strategy = "eager"
+        option.set_preference('dom.webnotifications.disabled', False)
+        option.set_preference('media.volume_scale', '0.0')
+        # option.add_argument("--headless")
+        option.add_argument('--enable-gpu')
+        # option.add_argument('disable-blink-features=AutomationControlled')
+        # option.add_argument("user-agent=Mozilla/5.0 (Android 4.4; Mobile; rv:41.0) Gecko/41.0 Firefox/41.0")
 
-    option = webdriver.FirefoxOptions()
-    option.page_load_strategy = "eager"
-    option.set_preference('dom.webnotifications.disabled', False)
-    option.set_preference('media.volume_scale', '0.0')
-    # option.add_argument("--headless")
-    option.add_argument('--enable-gpu')
-    option.add_argument('--disable-blink-features=AutomationControlled')
-    option.add_argument("--user-agent=Mozilla/5.0 (Linux; Android 13; SM-G998B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36")
+        browser = webdriver.Firefox(options=option)
+        browser.get("https://srv-go.ru")
+        time.sleep(10)
+        return browser
 
+    browser = browser_with_options()
+    # bugristoe = find_by_xpath("//div[@id='lyt_chk_clone_0']")
+    # bugristoe.click()
 
-    browser = webdriver.Firefox(options=option)
-    browser.get("https://srv-go.ru")
-
-    bugristoe = find_by_xpath("//div[@id='lyt_chk_clone_0']")
-    bugristoe.click()
-
-    logging_by_email(login=login, password=password)
-
+    # logging_main()
+    load_cookies()
+    # logging_by_email(login=login, password=password)
     # CREATE_REQUEST_WINDOW
 
     def car_select():
@@ -131,7 +147,6 @@ def central():
         day_choice_window.clear()
         day_choice_window.send_keys(day)
 
-
     def tupo_vse_knopki():
         for i in range(24):
             xpath = f'//*[@id="lyt_slot_clone_{str(i)}"]'
@@ -150,18 +165,15 @@ def central():
         except:
             print("TRY again")
 
-    def slots_booker():
-        while True:
-            create_request()
-            day_choice(day, first_mutch=True)
-            for _ in range(250):
-                day_choice(day)
-                tupo_vse_knopki()
+    # def slots_booker():
+    #     while True:
+    #         create_request()
+    #         day_choice(day, first_mutch=True)
+    #         for _ in range(250):
+    #             day_choice(day)
+    #             tupo_vse_knopki()
 
-    slots_booker()
-
-
-
+    # slots_booker()
 
 # TODO: Добавить подгрузку куки https://www.youtube.com/watch?v=q0pc7nJZchA
 # TODO: надо добавить проверку наличия элемента ввода даты
@@ -173,4 +185,3 @@ def central():
 # TODO: сделать модуль, котоырй  будет регать автомобиль самостоятельно
 # TODO: сделать модуль, котоырй  будет заходить с разных аккаунтов, парсить страницу с активными забронированными слотами и ложить в БД ОБЩУЮ
 # TODO: подключить к ТГ БОТУ куда надо будет закидывать удостоверение, все данные о машине и инфо о заявке
-
