@@ -1,7 +1,13 @@
 # # ALI_DATA
+# account_id = 1
 # login = "a21616157@gmail.com"
 # password = "Salima.Salih0203"
 # day = "07.11.2023"
+
+account_id = 2
+login = "oveta95@ymemphisa.com"
+password = "Adsmkdjwh341A-"
+day = "08.11.2023"
 
 # 1) - 2 обучение
 # 2 день - 2 часа
@@ -9,7 +15,9 @@
 # 4 день - 2 часа + 1 + 1 + 1
 # 5 день - 1  + 1 + 1 +2
 # 6 день - 3 + 3
-# 7 день - 2
+# 7 день - 4
+# 8 day  -3
+# 9 day - 2 + 2
 
 
 import datetime
@@ -17,19 +25,23 @@ import os
 import pickle
 import time
 import threading
+from pprint import pprint
+
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 
 def central():
-    account_id = 2
-    login = "oveta95@ymemphisa.com"
-    password = "Adsmkdjwh341A-"
-    day = "08.11.2023"
-
     def find_by_xpath(xpath: str):
         return WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath)))
 
@@ -40,16 +52,17 @@ def central():
         btn.send_keys(Keys.ARROW_DOWN)
         btn.send_keys(Keys.ENTER)
 
-    # def logging_main():
-    #     if os.path.isfile(os.getcwd() + f"/cookies/{account_id}.pkl"):
-    #         try:
-    #             load_cookies()
-    #         except:
-    #             logging_by_email(login=login, password=password)
-    #     else:
-    #         logging_by_email(login=login, password=password)
+    def logging_main():
+        if os.path.isfile(os.getcwd() + f"/cookies/{account_id}.pkl"):
+            try:
+                load_cookies()
+            except:
+                logging_by_email(login=login, password=password)
+        else:
+            logging_by_email(login=login, password=password)
 
     def cookies_save():
+        time.sleep(5)
         pickle.dump(browser.get_cookies(), open(os.getcwd() + f"/cookies/{account_id}.pkl", "wb"))
 
     def load_cookies():
@@ -58,7 +71,6 @@ def central():
         for cookie in cookies:
             browser.add_cookie(cookie)
         browser.refresh()
-        print("loaded cookies")
 
     def logging_by_email(login: str, password: str):
         login_window = find_by_xpath(
@@ -74,29 +86,27 @@ def central():
         enter.click()
         cookies_save()
 
-
     def browser_with_options():
-        option = webdriver.FirefoxOptions()
-        option.page_load_strategy = "eager"
-        option.set_preference('dom.webnotifications.disabled', False)
-        option.set_preference('media.volume_scale', '0.0')
-        # option.add_argument("--headless")
-        option.add_argument('--enable-gpu')
-        # option.add_argument('disable-blink-features=AutomationControlled')
-        # option.add_argument("user-agent=Mozilla/5.0 (Android 4.4; Mobile; rv:41.0) Gecko/41.0 Firefox/41.0")
+        # Use a custom User-Agent
+        user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.117 Safari/537.36"
+        options = Options()
+        options.add_argument(f"user-agent={user_agent}")
 
-        browser = webdriver.Firefox(options=option)
+        service = Service(ChromeDriverManager(driver_version="118.0.5993.117").install())
+        browser = webdriver.Chrome(service=service, options=options)
+        wait = WebDriverWait(browser, 10, poll_frequency=1)
+
         browser.get("https://srv-go.ru")
-        time.sleep(10)
         return browser
 
     browser = browser_with_options()
-    # bugristoe = find_by_xpath("//div[@id='lyt_chk_clone_0']")
-    # bugristoe.click()
+    bugristoe = find_by_xpath("//div[@id='lyt_chk_clone_0']")
+    bugristoe.click()
 
-    # logging_main()
-    load_cookies()
-    # logging_by_email(login=login, password=password)
+    logging_main()
+
+    # load_cookies(browser)
+    # logging_by_email(login=login, password=password, browser=browser)
     # CREATE_REQUEST_WINDOW
 
     def car_select():
@@ -165,15 +175,17 @@ def central():
         except:
             print("TRY again")
 
-    # def slots_booker():
-    #     while True:
-    #         create_request()
-    #         day_choice(day, first_mutch=True)
-    #         for _ in range(250):
-    #             day_choice(day)
-    #             tupo_vse_knopki()
+    def slots_booker():
+        while True:
+            create_request()
+            day_choice(day, first_mutch=True)
+            for _ in range(250):
+                day_choice(day)
+                tupo_vse_knopki()
 
-    # slots_booker()
+    slots_booker()
+
+
 
 # TODO: Добавить подгрузку куки https://www.youtube.com/watch?v=q0pc7nJZchA
 # TODO: надо добавить проверку наличия элемента ввода даты
