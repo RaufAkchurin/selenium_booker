@@ -26,7 +26,7 @@ def central():
     # ACCOUNT 2
     login = "oveta95@ymemphisa.com"
     password = "Adsmkdjwh341A-"
-    day = "07.11.2023"
+    day = "08.11.2023"
 
     def inactive_checker(slot):
         if "slotInactive" in slot.get_attribute("class"):
@@ -61,12 +61,16 @@ def central():
             "/html/body/div[1]/div/div/div[2]/div[2]/div/div[2]/div/div[4]/div[2]/div/div/div[5]/div[1]/button/div/span")
         enter.click()
 
+
+
     option = webdriver.FirefoxOptions()
     option.page_load_strategy = "eager"
     option.set_preference('dom.webnotifications.disabled', False)
     option.set_preference('media.volume_scale', '0.0')
     # option.add_argument("--headless")
     option.add_argument('--enable-gpu')
+    option.add_argument('--disable-blink-features=AutomationControlled')
+    option.add_argument("--user-agent=Mozilla/5.0 (Linux; Android 13; SM-G998B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36")
 
 
     browser = webdriver.Firefox(options=option)
@@ -129,8 +133,7 @@ def central():
 
 
     def tupo_vse_knopki():
-        index = 20
-        for i in range(1, index):
+        for i in range(24):
             xpath = f'//*[@id="lyt_slot_clone_{str(i)}"]'
             try:
                 btn = browser.find_element(By.XPATH, xpath)
@@ -142,6 +145,7 @@ def central():
         create_btn_xpath = "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button"
         try:
             btn = browser.find_element(By.XPATH, create_btn_xpath)
+            # btn = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, create_btn_xpath)))
             btn.click()
         except:
             print("TRY again")
@@ -159,9 +163,14 @@ def central():
 
 
 
-
-# TODO: сделать чтобы открывалось не несколько браузеров а несколько вкладок отдельными процессами
-# TODO: запуск несколько браузеров одновременно
+# TODO: Добавить подгрузку куки https://www.youtube.com/watch?v=q0pc7nJZchA
 # TODO: надо добавить проверку наличия элемента ввода даты
 # TODO: если элемента нету - то запускать блок с созданием новой заявки
 # TODO: добавить выбор автомобиля по данным
+
+
+# РАЗВИТИЕ В АВТОМАТИЗАЦИЮ
+# TODO: сделать модуль, котоырй  будет регать автомобиль самостоятельно
+# TODO: сделать модуль, котоырй  будет заходить с разных аккаунтов, парсить страницу с активными забронированными слотами и ложить в БД ОБЩУЮ
+# TODO: подключить к ТГ БОТУ куда надо будет закидывать удостоверение, все данные о машине и инфо о заявке
+
