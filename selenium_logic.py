@@ -3,11 +3,14 @@
 # login = "a21616157@gmail.com"
 # password = "Salima.Salih0203"
 # day = "07.11.2023"
+from selenium.common import ElementNotInteractableException, TimeoutException, ElementClickInterceptedException
+
+from speed_checker import speed_checker
 
 account_id = 2
 login = "oveta95@ymemphisa.com"
 password = "Adsmkdjwh341A-"
-day = "08.11.2023"
+day = "09.11.2023"
 
 # 1) - 2 обучение
 # 2 день - 2 часа
@@ -19,19 +22,10 @@ day = "08.11.2023"
 # 8 day  -3
 # 9 day - 2 + 2
 
-
+import time
 import datetime
 import os
 import pickle
-import time
-import threading
-from pprint import pprint
-
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -40,6 +34,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
+
 
 def central():
     def find_by_xpath(xpath: str):
@@ -86,8 +81,7 @@ def central():
         enter.click()
         cookies_save()
 
-    def browser_with_options():
-        # Use a custom User-Agent
+    def custom_chrome():
         user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.117 Safari/537.36"
         options = Options()
         options.add_argument(f"user-agent={user_agent}")
@@ -96,66 +90,79 @@ def central():
         browser = webdriver.Chrome(service=service, options=options)
         wait = WebDriverWait(browser, 10, poll_frequency=1)
 
+    def custom_firefox():
+        option = webdriver.FirefoxOptions()
+        option.page_load_strategy = "eager"
+        option.set_preference('dom.webnotifications.disabled', False)
+        option.set_preference('media.volume_scale', '0.0')
+        # option.add_argument("--headless")
+        option.add_argument('--enable-gpu')
+        # option.add_argument('disable-blink-features=AutomationControlled')
+        # option.add_argument("user-agent=Mozilla/5.0 (Android 4.4; Mobile; rv:41.0) Gecko/41.0 Firefox/41.0")
+        browser = webdriver.Firefox(options=option)
+        return browser
+
+    def browser_with_options():
+        browser = custom_firefox()
         browser.get("https://srv-go.ru")
+        time.sleep(10)
         return browser
 
     browser = browser_with_options()
     bugristoe = find_by_xpath("//div[@id='lyt_chk_clone_0']")
     bugristoe.click()
 
-    logging_main()
-
-    # load_cookies(browser)
-    # logging_by_email(login=login, password=password, browser=browser)
+    logging_by_email(login=login, password=password)
     # CREATE_REQUEST_WINDOW
 
     def car_select():
         SELECT_LOCATOR = find_by_xpath(
             "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[1]/div/div[2]/div[3]/div/div")
         SELECT_LOCATOR.send_keys(Keys.ARROW_DOWN)
-        SELECT_LOCATOR.send_keys(Keys.ARROW_DOWN)
-        SELECT_LOCATOR.send_keys(Keys.ARROW_DOWN)
-        # car_choice = find_by_xpath("/html/body/div[8]/div/div/div/div[1]/div/div/div[274]")
-        # car_choice.click()
         SELECT_LOCATOR.send_keys(Keys.ENTER)
 
     def create_request():
-        create_request_btn = find_by_xpath(
-            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[1]/div[2]/div/div[4]/div[3]/button/div/span")
-        create_request_btn.click()
+        try:
+            create_request_btn = find_by_xpath(
+                "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[1]/div[2]/div/div[4]/div[3]/button/div/span")
+            create_request_btn.click()
 
-        wehicle_choice_btn = find_by_xpath(
-            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[1]/div/div[2]/div[3]/div/div")
-        wehicle_choice_btn.click()
+            wehicle_choice_btn = find_by_xpath(
+                "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[1]/div/div[2]/div[3]/div/div")
+            wehicle_choice_btn.click()
 
-        car_select()
-        next_page_btn = find_by_xpath(
-            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button/div/span")
-        next_page_btn.click()
+            car_select()
+            next_page_btn = find_by_xpath(
+                "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button/div/span")
+            next_page_btn.click()
 
-        transport_type_btn = select_first_in_dropdown(
-            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[3]/div[3]/div/div")
-        transport_kind_btn = select_first_in_dropdown(
-            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[5]/div[3]/div/div")
+            select_first_in_dropdown(
+                "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[3]/div[3]/div/div")
+            select_first_in_dropdown(
+                "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[5]/div[3]/div/div")
 
-        copy_data_btn = find_by_xpath(
-            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[7]/div/label/span")
-        copy_data_btn.click()
+            copy_data_btn = find_by_xpath(
+                "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[2]/div/div[7]/div/label/span")
+            copy_data_btn.click()
 
-        next_page_btn2 = find_by_xpath(
-            "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button/div/span")
-        next_page_btn2.click()
+            next_page_btn2 = find_by_xpath(
+                "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button/div/span")
+            next_page_btn2.click()
+        except ElementClickInterceptedException:
+            browser.refresh()
+
 
     # DAY_BOOKING_PAGE
 
     def day_choice(day: datetime, first_mutch=False):
-        xpath = "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[3]/div/div[1]/div/div[1]/div[3]/div/div[1]/div/input"
-        if first_mutch:
+        try:
+            xpath = "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[2]/div/div[2]/div/div[3]/div/div[3]/div/div[1]/div/div[1]/div[3]/div/div[1]/div/input"
             day_choice_window = find_by_xpath(xpath)
-        else:
-            day_choice_window = browser.find_element(By.XPATH, xpath)
-        day_choice_window.clear()
-        day_choice_window.send_keys(day)
+            day_choice_window.clear()
+            day_choice_window.send_keys(day)
+        except TimeoutException:
+            browser.refresh()
+            create_request()
 
     def tupo_vse_knopki():
         for i in range(24):
@@ -165,35 +172,46 @@ def central():
                 btn.click()
             except:
                 pass
+
+        speed_checker(datetime.datetime.now())
         print(datetime.datetime.now())
 
+        #TODO: попробовать такую логику - если нажалась кнопка - то не обновлять дату а дождаться активности
+        # кнопки создания и нажать её сразу
+
         create_btn_xpath = "/html/body/div[1]/div/div/div/div[3]/div[2]/div/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/div[2]/button"
+
         try:
             btn = browser.find_element(By.XPATH, create_btn_xpath)
-            # btn = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, create_btn_xpath)))
             btn.click()
         except:
-            print("TRY again")
+            pass
 
     def slots_booker():
         while True:
             create_request()
             day_choice(day, first_mutch=True)
             for _ in range(250):
-                day_choice(day)
-                tupo_vse_knopki()
+                try:
+                    day_choice(day)
+                    tupo_vse_knopki()
+                except ElementNotInteractableException: # Когда машина забронирована, тут падает исключение, тк не может найти поле для ввода даты
+                    create_request()
+                    day_choice(day, first_mutch=True)
 
     slots_booker()
 
 
+#TODO: избавитьсяот ошибок при бронировании
+#TODO: автоматизировать создание машин
+#TODO: МОдуль для сбора активных заявок
 
-# TODO: Добавить подгрузку куки https://www.youtube.com/watch?v=q0pc7nJZchA
+
+
 # TODO: надо добавить проверку наличия элемента ввода даты
 # TODO: если элемента нету - то запускать блок с созданием новой заявки
 # TODO: добавить выбор автомобиля по данным
 
 
 # РАЗВИТИЕ В АВТОМАТИЗАЦИЮ
-# TODO: сделать модуль, котоырй  будет регать автомобиль самостоятельно
-# TODO: сделать модуль, котоырй  будет заходить с разных аккаунтов, парсить страницу с активными забронированными слотами и ложить в БД ОБЩУЮ
 # TODO: подключить к ТГ БОТУ куда надо будет закидывать удостоверение, все данные о машине и инфо о заявке
